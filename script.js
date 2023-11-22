@@ -17,25 +17,17 @@ Ses envies :
 */
 
 /* PHASE 0 : activer le tamastudi 
-1) Cliquer sur le bouton du milieu
+
 2) Ajouter un compteur qui attend d'avoir une valeur max de 5
-3) Alors on fait naitre notre tama
-*/
-// const start = () => {
-//   // 1) Cliquer sur le bouton du milieu
-//   const buttonCenter = document.querySelector(
-//     '.js-button[data-direction="center"]'
-//   );
-//   // 2) Ajouter un compteur qui attend d'avoir une valeur max de 5
-//   let count = 0;
-//   buttonCenter.addEventListener("click", () => {
-//     count++;
-//     if (count === 5) {
-//       // 3) Alors on fait naitre notre tama
-//       birth();
-//     }
-//   });
-// };
+3) Alors on fait naitre notre tama*/
+
+// 1) Cliquer sur le bouton du milieu
+const buttonCenter = document.querySelector(
+  `.js-button[data-direction = "center"]`
+);
+buttonCenter.addEventListener(`click`, () => {
+  console.log("click");
+});
 
 /* 
 PHASE 1 : la naissance de mon tama 
@@ -45,10 +37,25 @@ PHASE 1 : la naissance de mon tama
 4) affiche le nom de mon tama dans les vitals
 5) mettre les scores des vitals à 5
 */
+const start = () => {
+  //  Demander le prénom
+  const beastName = prompt("Choisir le nom de votre bête :");
 
-//  Demander le prénom
-// const beastName = prompt("Choisir le nom de votre bête :");
-// console.log(beastName);
+  // écolre mon oeuf
+  const character = document.querySelector(".js-character");
+  character.textContent = "🐣";
 
-// écolre mon oeuf
-console.log(document);
+  // afficher les vitals
+  const vitals = document.querySelector(".js-vitals");
+  vitals.classList.remove("hidden");
+
+  //afficher le nom de la bête
+  const beastNameVitals = document.querySelector(".js-tamaName");
+  beastNameVitals.textContent = beastName;
+
+  // Mettre les scores des vitals à 5
+  const scoreVitals = document.querySelectorAll(".js-score");
+  scoreVitals.forEach((score) => {
+    score.textContent = 5;
+  });
+};
