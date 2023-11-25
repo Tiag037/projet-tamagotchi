@@ -13,21 +13,30 @@ Ensuite il devient un "grand" avec une humeur variable
 Ses envies :
 - 😋 : faim, aléatoire minimum 30 sec et max 3 minutes
 - 🥱 : jouer, aléatoire minimum 30 sec et max 3 minutes
-- 💩 : caca, aléatoire minimum 30 sec et max 1.30 minutes après avoir mangé
+- 💩 : caca, aléatoire minimum 30 sec et max 1.30 minutes uniquement avoir mangé
 */
 
-/* PHASE 0 : activer le tamastudi 
+/* PHASE 0 : activer le tamastudi */
 
-2) Ajouter un compteur qui attend d'avoir une valeur max de 5
-3) Alors on fait naitre notre tama*/
+const detectStart = () => {
+  // 1) Cliquer sur le bouton du milieu
+  const buttonCenter = document.querySelector(
+    `.js-button[data-direction="center"]`
+  );
 
-// 1) Cliquer sur le bouton du milieu
-const buttonCenter = document.querySelector(
-  `.js-button[data-direction = "center"]`
-);
-buttonCenter.addEventListener(`click`, () => {
-  console.log("click");
-});
+  //2) Ajouter un compteur qui attend d'avoir une valeur max de 5
+
+  let count = 0;
+  buttonCenter.addEventListener(`click`, () => {
+    count++;
+
+    console.log("click", count);
+    if (count === 5) {
+      // 3) Alors on fait naitre notre tama
+      start();
+    }
+  });
+};
 
 /* 
 PHASE 1 : la naissance de mon tama 
@@ -41,7 +50,7 @@ const start = () => {
   //  Demander le prénom
   const beastName = prompt("Choisir le nom de votre bête :");
 
-  // écolre mon oeuf
+  // éclore mon oeuf
   const character = document.querySelector(".js-character");
   character.textContent = "🐣";
 
@@ -58,4 +67,60 @@ const start = () => {
   scoreVitals.forEach((score) => {
     score.textContent = 5;
   });
+
+  //Afficher les actions
+  const actions = document.querySelector(".js-actions");
+  actions.classList.remove("hidden");
+
+  // Appel de la fonction pour grandire
+
+  evolve();
 };
+
+/*
+PHASE 2 : L'évolution de la bête
+1) générer le premier caca aléatoirement
+2) il devient grand
+2) nettoyer "son écran"
+3) il devient grand
+*/
+
+const evolve = () => {
+  setTimeout(() => {
+    console.log("salut");
+  }, 3000);
+};
+
+// LES ENVIES
+/*
+- 😋 : faim, aléatoire minimum 30 sec et max 3 minutes
+- 🥱 : jouer, aléatoire minimum 30 sec et max 3 minutes
+- 💩 : caca, aléatoire minimum 30 sec et max 1.30 minutes uniquement avoir mangé
+*/
+//1) créer une fonction qu'on va pouvoir appeler plus tard dans le code
+//2) stocker les envies de ma bestiole dans une variable
+//3) avec un setTimeout, choisir une envie aléatoire
+//4) la durée su setTimeout est dynamique et est comprise entre une valeur max et une valeur min
+//5) afficher l'envie de la bestiole sur notre écran
+
+const wantsTo = () => {
+  const need = ["😋", "🥱", "💩"];
+  // pour tester, on fait min = 1s et max = 3s
+  const minDuration = 1000;
+  const maxDuration = 3000;
+  const duration = getRandomInt(3000);
+  console.log(duration);
+  setTimeout(() => {
+    const randomIndexNeeds = getRandomInt(need.length); // evité d'écrir les chiffres en dure ex:3
+    const desire = need[randomIndexNeeds];
+    console.log("Je veux faire ", desire);
+  }, 1000);
+};
+
+const getRandomInt = (max) => {
+  return Math.floor(Math.random() * max);
+};
+wantsTo();
+
+//Lance la fonction de début
+detectStart();
