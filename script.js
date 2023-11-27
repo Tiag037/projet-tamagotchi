@@ -13,8 +13,16 @@ Ensuite il devient un "grand" avec une humeur variable
 Ses envies :
 - 😋 : faim, aléatoire minimum 30 sec et max 3 minutes
 - 🥱 : jouer, aléatoire minimum 30 sec et max 3 minutes
-- 💩 : caca, aléatoire minimum 30 sec et max 1.30 minutes uniquement avoir mangé
+- 💩 : caca, aléatoire minimum 30 sec et max 3 minutes uniquement avoir mangé
 */
+
+const myTama = {
+  name: "",
+  alive: false,
+  fed: 5,
+  playfull: 5,
+  cleaned: 5,
+};
 
 /* PHASE 0 : activer le tamastudi */
 
@@ -45,14 +53,14 @@ PHASE 1 : la naissance de mon tama
 3) affiche mes vitals
 4) affiche le nom de mon tama dans les vitals
 5) mettre les scores des vitals à 5
+6) l'envie de faire caca ne peut etre faite que s'il a déjà mangé
 */
 const start = () => {
   //  Demander le prénom
-  const beastName = prompt("Choisir le nom de votre bête :");
+  myTama.name = prompt("Choisir le nom de votre bête :");
 
   // éclore mon oeuf
-  const character = document.querySelector(".js-character");
-  character.textContent = "🐣";
+  showInScreen("🐣");
 
   // afficher les vitals
   const vitals = document.querySelector(".js-vitals");
@@ -60,7 +68,7 @@ const start = () => {
 
   //afficher le nom de la bête
   const beastNameVitals = document.querySelector(".js-tamaName");
-  beastNameVitals.textContent = beastName;
+  beastNameVitals.textContent = myTama.name;
 
   // Mettre les scores des vitals à 5
   const scoreVitals = document.querySelectorAll(".js-score");
@@ -77,18 +85,15 @@ const start = () => {
   evolve();
 };
 
-/*
-PHASE 2 : L'évolution de la bête
-1) générer le premier caca aléatoirement
-2) il devient grand
-2) nettoyer "son écran"
-3) il devient grand
-*/
+//PHASE 2 : L'évolution de la bête
 
+//Attrendre que la bete est une première envie pour grandire
 const evolve = () => {
-  setTimeout(() => {
-    console.log("salut");
-  }, 3000);
+  const functionToExecute = () => {
+    showInScreen("🥰");
+  };
+  //2) il devient grand
+  wantsTo(functionToExecute);
 };
 
 // LES ENVIES
@@ -103,24 +108,40 @@ const evolve = () => {
 //4) la durée su setTimeout est dynamique et est comprise entre une valeur max et une valeur min
 //5) afficher l'envie de la bestiole sur notre écran
 
-const wantsTo = () => {
+const wantsTo = (callback) => {
   const need = ["😋", "🥱", "💩"];
   // pour tester, on fait min = 1s et max = 3s
   const minDuration = 1000;
   const maxDuration = 3000;
-  const duration = getRandomInt(3000);
-  console.log(duration);
+  const duration = getRandomInt({
+    min: minDuration,
+    max: maxDuration,
+  });
   setTimeout(() => {
-    const randomIndexNeeds = getRandomInt(need.length); // evité d'écrir les chiffres en dure ex:3
+    const randomIndexNeeds = getRandomInt({
+      max: need.length,
+    }); // evité d'écrir les chiffres en dure ex:3
     const desire = need[randomIndexNeeds];
-    console.log("Je veux faire ", desire);
-  }, 1000);
+    if (callback) {
+      callback();
+    } else {
+      showInScreen(desire);
+    }
+  }, duration);
 };
 
-const getRandomInt = (max) => {
-  return Math.floor(Math.random() * max);
+//fonction qui retourn un nombre aléatoire compris entre un min et max
+const getRandomInt = (props) => {
+  const max = props.max;
+  const min = props.min ? props.min : 0;
+  return Math.floor(Math.random() * (max - min) + min);
 };
-wantsTo();
+
+//fonction qui gère l'affichage des émoticones dans l'écran du tamagotchi
+const character = document.querySelector(".js-character");
+const showInScreen = (display) => {
+  character.textContent = display;
+};
 
 //Lance la fonction de début
 detectStart();
