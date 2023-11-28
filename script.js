@@ -19,9 +19,10 @@ Ses envies :
 const myTama = {
   name: "",
   alive: false,
-  fed: 5,
-  playfull: 5,
-  cleaned: 5,
+  fed: 0,
+  playfull: 0,
+  cleaned: 0,
+  lifeDuration: 0,
 };
 
 /* PHASE 0 : activer le tamastudi */
@@ -71,10 +72,14 @@ const start = () => {
   beastNameVitals.textContent = myTama.name;
 
   // Mettre les scores des vitals à 5
+  const defaultScore = 5;
   const scoreVitals = document.querySelectorAll(".js-score");
   scoreVitals.forEach((score) => {
-    score.textContent = 5;
+    score.textContent = defaultScore;
   });
+  myTama.fed = defaultScore;
+  myTama.playfull = defaultScore;
+  myTama.cleaned = defaultScore;
 
   //Afficher les actions
   const actions = document.querySelector(".js-actions");
@@ -83,6 +88,11 @@ const start = () => {
   // Appel de la fonction pour grandire
 
   evolve();
+  //clalcule de son humerur
+
+  //calcule de la duréé de vie
+
+  lifeDuration();
 };
 
 //PHASE 2 : L'évolution de la bête
@@ -90,7 +100,7 @@ const start = () => {
 //Attrendre que la bete est une première envie pour grandire
 const evolve = () => {
   const functionToExecute = () => {
-    showInScreen("🥰");
+    mood();
   };
   //2) il devient grand
   wantsTo(functionToExecute);
@@ -127,6 +137,40 @@ const wantsTo = (callback) => {
     } else {
       showInScreen(desire);
     }
+  }, duration);
+};
+
+//HUMEUR GENERAL
+//une fonction qui calcule la moyenne des 3 indicateurs faim, ennui, propreté de notre tama
+//et elle affiche cette moyenne dans les vitals
+
+const mood = () => {
+  //partie  1 affichage numerique
+  const sum = myTama.fed + myTama.playfull + myTama.cleaned;
+  const average = sum / 3;
+  const rounded = Math.round(average);
+  const displayMood = document.querySelector(".js-mood");
+  displayMood.textContent = rounded;
+  //partie 2 affichage visuel
+  /*
+- 😢 : triste 0/5
+- 🙁 : pas content 1/5
+- 🙂 : normal 2/5
+- 😄 : content 3/5
+- 🤗 : heureux 4/5
+- 🥰 : très heureux 5/5
+- 👻 : mort 0/5 pendant plus d'une minute */
+  const listOfEmojis = ["😢", "🙁", "🙂", "😄", "🤗", "🥰"];
+  showInScreen(listOfEmojis[rounded]);
+};
+//duéé de Vie
+//une fonction qui toutes les minutes met à jours la duréé de vie du tama
+const lifeDuration = () => {
+  const duration = 60_000;
+  const displayLifeDuration = document.querySelector(".js-life-duration");
+  setInterval(() => {
+    myTama.lifeDuration++;
+    displayLifeDuration.textContent = myTama.lifeDuration;
   }, duration);
 };
 
