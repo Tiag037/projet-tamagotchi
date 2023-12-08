@@ -39,7 +39,6 @@ const detectStart = () => {
   buttonCenter.addEventListener(`click`, () => {
     count++;
 
-    console.log("click", count);
     if (count === 5) {
       // 3) Alors on fait naitre notre tama
       start();
@@ -101,6 +100,7 @@ const start = () => {
 const evolve = () => {
   const functionToExecute = () => {
     mood();
+    cycleOfLife();
   };
   //2) il devient grand
   wantsTo(functionToExecute);
@@ -133,7 +133,7 @@ const wantsTo = (callback) => {
     }); // evité d'écrir les chiffres en dure ex:3
     const desire = need[randomIndexNeeds];
     if (callback) {
-      callback();
+      callback(desire);
     } else {
       showInScreen(desire);
     }
@@ -172,6 +172,36 @@ const lifeDuration = () => {
     myTama.lifeDuration++;
     displayLifeDuration.textContent = myTama.lifeDuration;
   }, duration);
+};
+
+//GESTION DE VIE "ADULTE"
+// -notre tama à une humeur général
+// -cette humeur est la moyenne de 3 indicateurs
+// -cest indicateurs évoluent avec le temps
+// -De temps en temps notre tama a une "envie"
+// -si on ne réponds pas cette envie dans les temps
+// -l'indicateur associé diminue
+// -si on répond dans le temps
+// -l'indicateur augmente
+// -et ça continue jusqu'à ce que notre tama meurt
+const cycleOfLife = () => {
+  //1)les indicateurs évoluent avec le temps
+  //de temps en temps notre tama à une nouvel envie
+  const functionToExecute = (desire) => {
+    showInScreen(desire);
+    manageIndicatore(desire);
+  };
+  wantsTo(functionToExecute);
+};
+//2) si on ne réponds apas à cette envie dans les temps
+// -l'indicateur asspcié dilinue
+// -si on répond dans le temps
+// -l'indicateur augmente
+const manageIndicatore = (desire) => {
+  //need = ["😋", "🥱", "💩"];
+  if (desire === "😋") {
+  } else if (desire === "🥱") {
+  }
 };
 
 //fonction qui retourn un nombre aléatoire compris entre un min et max
